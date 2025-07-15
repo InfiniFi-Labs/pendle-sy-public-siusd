@@ -76,7 +76,6 @@ contract InfiniFiPendleTest is InfiniFiTest {
 
         uint256 balanceOfUserBefore = IERC20(token).balanceOf(user);
         uint256 adapterBalanceBefore = adapter.balanceOf(user);
-        uint256 siUSDBalanceBefore = IERC20(siusd).balanceOf(user);
 
         uint256 expectedAmountOut = adapter.previewDeposit(token, amount);
         uint256 amountOut = adapter.deposit(user, token, amount, 0);
@@ -85,12 +84,10 @@ contract InfiniFiPendleTest is InfiniFiTest {
 
         uint256 balanceOfUserAfter = IERC20(token).balanceOf(user);
         uint256 adapterBalanceAfter = adapter.balanceOf(user);
-        uint256 siUSDBalanceAfter = IERC20(siusd).balanceOf(user);
 
         // Verify the deposit worked
         assertEq(balanceOfUserBefore - balanceOfUserAfter, amount, "Token should be transferred from user");
         assertGt(adapterBalanceAfter, adapterBalanceBefore, "User should receive adapter tokens");
-        assertEq(siUSDBalanceAfter, siUSDBalanceBefore, "User should not receive siUSD tokens");
     }
 
     function _redeem(address token, uint256 amount) internal {
@@ -117,10 +114,12 @@ contract InfiniFiPendleTest is InfiniFiTest {
     function test_adapter() public {
         _deposit(usdc, 100e6);
         _deposit(iusd, 100e18);
+        _deposit(siusd, 100e18);
 
         uint256 shareTokenAmount = adapter.balanceOf(user);
 
-        _redeem(iusd, shareTokenAmount / 2);
-        _redeem(usdc, shareTokenAmount / 2);
+        _redeem(iusd, shareTokenAmount / 3);
+        _redeem(usdc, shareTokenAmount / 3);
+        _redeem(siusd, shareTokenAmount / 3);
     }
 }
