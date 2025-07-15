@@ -50,7 +50,7 @@ contract InfiniFiPendleTest is InfiniFiTest {
     address siusd;
 
     function setUp() public {
-        vm.createSelectFork("https://eth-mainnet.g.alchemy.com/v2/bYiYTFqsDKMe0iuVrL-1RKE1dfAMSzNp");
+        vm.createSelectFork("http://localhost:8545", 22923965);
 
         // Deploy implementation
         PendleInfinifiSIUSD implementation = new PendleInfinifiSIUSD();
@@ -78,7 +78,10 @@ contract InfiniFiPendleTest is InfiniFiTest {
         uint256 adapterBalanceBefore = adapter.balanceOf(user);
         uint256 siUSDBalanceBefore = IERC20(siusd).balanceOf(user);
 
-        adapter.deposit(user, token, amount, 0);
+        uint256 expectedAmountOut = adapter.previewDeposit(token, amount);
+        uint256 amountOut = adapter.deposit(user, token, amount, 0);
+
+        assertEq(expectedAmountOut, amountOut, "previewedDeposit is not returning correct data");
 
         uint256 balanceOfUserAfter = IERC20(token).balanceOf(user);
         uint256 adapterBalanceAfter = adapter.balanceOf(user);
@@ -98,7 +101,10 @@ contract InfiniFiPendleTest is InfiniFiTest {
         uint256 balanceOfUserBefore = IERC20(token).balanceOf(user);
         uint256 adapterBalanceBefore = adapter.balanceOf(user);
 
-        adapter.redeem(user, amount, token, 0, false);
+        uint256 expectedAmountOut = adapter.previewRedeem(token, amount);
+        uint256 amountOut = adapter.redeem(user, amount, token, 0, false);
+
+        assertEq(expectedAmountOut, amountOut, "previewRedeem is not returning correct data");
 
         uint256 balanceOfUserAfter = IERC20(token).balanceOf(user);
         uint256 adapterBalanceAfter = adapter.balanceOf(user);
