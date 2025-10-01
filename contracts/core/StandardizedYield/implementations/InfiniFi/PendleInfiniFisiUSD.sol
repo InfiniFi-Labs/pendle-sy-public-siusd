@@ -7,9 +7,13 @@ import "../PendleERC4626UpgSYV2.sol";
 
 interface IInfiniFiGateway {
     function stake(address _to, uint256 _receiptTokens) external returns (uint256);
+
     function redeem(address _to, uint256 _amount, uint256 _minAssetsOut) external returns (uint256);
+
     function unstake(address _to, uint256 _stakedTokens) external returns (uint256);
+
     function getAddress(string memory _name) external view returns (address);
+
     function mintAndStake(address _to, uint256 _amount) external returns (uint256);
 }
 
