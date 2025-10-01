@@ -1,45 +1,66 @@
-# Pendle Standardized Yield (SY) Contracts
+## Foundry
 
-This repository contains the Standardized Yield (SY) smart contracts of Pendle Protocol, which serve as wrappers around various yield-bearing tokens to standardize their interfaces and behaviors.
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-For Pendle's core protocol contracts, please refer to [pendle-core-v2-public](https://github.com/pendle-finance/pendle-core-v2-public).
+Foundry consists of:
 
-## Overview
+-   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+-   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+-   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+-   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
-The SY contracts provide a unified interface for interacting with different yield-bearing tokens across DeFi protocols, including:
+## Documentation
 
-- Liquid Staking Derivatives (Lido, Renzo, Swell, etc.)
-- Lending Protocols (Aave, Venus, Flux)
-- AMM LP Tokens (GMX, Thena)
-- Yield Aggregators (Convex)
-- And many more
+https://book.getfoundry.sh/
 
-## Key Features
+## Usage
 
-- Standardized deposit/redeem interface
-- Support for native tokens and wrapped versions
-- Reward handling for protocols with yield farming
-- Exchange rate calculations
-- Preview functions for deposits and redemptions
+### Build
 
-## Contract Structure
+```shell
+$ forge build
+```
 
-- Base contracts:
-  - `SYBase.sol`: Core base contract for basic SY functionality
-  - `SYBaseWithRewards.sol`: Extended base for SYs with reward claiming
-  - `SYBaseUpg.sol`: Upgradeable version of the base contract
+### Test
 
-- Implementation contracts:
-  - Protocol-specific implementations inheriting from base contracts
-  - Each implementation handles the unique aspects of interacting with its underlying protocol
+```shell
+$ forge test
+```
 
-## License
+### Format
 
-BUSL-1.1
+```shell
+$ forge fmt
+```
 
-## Links
+### Gas Snapshots
 
-- Website: https://pendle.finance
-- Documentation: https://docs.pendle.finance/Developers/Overview
-- GitHub: https://github.com/pendle-finance/pendle-sy
-- Core Contracts: https://github.com/pendle-finance/pendle-core-v2-public
+```shell
+$ forge snapshot
+```
+
+### Anvil
+
+```shell
+$ anvil
+```
+
+### Deploy
+
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+
+### Cast
+
+```shell
+$ cast <subcommand>
+```
+
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```
