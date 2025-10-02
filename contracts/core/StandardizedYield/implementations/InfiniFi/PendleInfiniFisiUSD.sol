@@ -102,11 +102,9 @@ contract PendleInfinifiSIUSD is PendleERC4626UpgSYV2 {
         revert UnsupportedToken(tokenOut);
     }
 
-    // returns exchange rate in USDC
+    // returns exchange rate in iUSD
     function exchangeRate() public view override returns (uint256) {
-        address redeemController = IInfiniFiGateway(GATEWAY).getAddress("redeemController");
-        uint256 receiptOut = _convertToAssets(PMath.ONE);
-        return IRedeemController(redeemController).receiptToAsset(receiptOut);
+        return _convertToAssets(PMath.ONE);
     }
 
     function _previewDeposit(address tokenIn, uint256 amountTokenToDeposit)
@@ -200,6 +198,6 @@ contract PendleInfinifiSIUSD is PendleERC4626UpgSYV2 {
         override
         returns (AssetType assetType, address assetAddress, uint8 assetDecimals)
     {
-        return (AssetType.TOKEN, USDC, 6);
+        return (AssetType.TOKEN, IUSD, 18);
     }
 }
