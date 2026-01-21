@@ -40,9 +40,9 @@ contract DeployInfiniFiSYArbitrum is Script {
         PendleChainlinkExchangeRateWrapper exchangeRateWrapper = PendleChainlinkExchangeRateWrapper(_EXCHANGE_RATE_WRAPPER);
 
         // prank a whitelist for reading our oracle feed
-        vm.prank(0xBd640b5C2190372877346474c8a9aA7b8C871DF1);
+        /*vm.prank(0xBd640b5C2190372877346474c8a9aA7b8C871DF1);
         (bool success, ) = _ORACLE.call(abi.encodeWithSignature("kiss(address)", address(exchangeRateWrapper)));
-        require(success, "Failed to whitelist oracle feed");
+        require(success, "Failed to whitelist oracle feed");*/
         
         uint256 exchangeRate = exchangeRateWrapper.getExchangeRate();
         require(exchangeRate > 1.05e18, "Invalid exchange rate");
@@ -61,7 +61,8 @@ contract DeployInfiniFiSYArbitrum is Script {
             bytes memory initData = abi.encodeWithSelector(
                 PendleERC20SYUpgV2.initialize.selector,
                 string.concat("SY ", yieldToken.name()),
-                string.concat("SY-", yieldToken.symbol())
+                string.concat("SY-", yieldToken.symbol()),
+                signer
             );
 
             TransparentUpgradeableProxy proxy =
@@ -73,6 +74,9 @@ contract DeployInfiniFiSYArbitrum is Script {
             console.log("Deployed contract at %s", address(proxy));
             console.log("SY token name  : %s", PendleERC20WithOracleSY(payable(address(proxy))).name());
             console.log("SY token symbol: %s", PendleERC20WithOracleSY(payable(address(proxy))).symbol());
+
+            require(PendleERC20WithOracleSY(payable(address(proxy))).owner() == signer, "Invalid owner");
+            PendleERC20WithOracleSY(payable(address(proxy))).transferOwnership(0x2aD631F72fB16d91c4953A7f4260A97C2fE2f31e, true, false);
         }
         vm.stopBroadcast();
     }
